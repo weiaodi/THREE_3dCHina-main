@@ -98,7 +98,7 @@ export default {
           const coordinates = feature.geometry.coordinates;
 
           const mesh = this.drawExtrudeMesh(coordinates, projection1, index);
-          mesh.scale.set(20, 20, 1);
+          mesh.scale.set(2, 2, 1);
           edge.add(mesh);
 
           this.map.add(edge);
@@ -126,16 +126,26 @@ export default {
       const shape = new THREE.Shape();
 
       console.log(coordinates);
-      coordinates.forEach((coordinate, i) => {
+      coordinates.forEach((coordinate) => {
         const wgs = this.UTMtoWGS(coordinate[0], coordinate[1]);
         const [x, y] = projection(wgs);
         console.log(wgs);
         // const [x, y] = projection(coordinate);
         console.log(x, -y);
-        if (i === 0) {
-          shape.moveTo(x, -y);
-        }
-        shape.lineTo(x, -y);
+        // if (i === 0) {
+        //   shape.moveTo(x, -y);
+        // }
+        // shape.lineTo(x, -y);
+        // shape.autoClose = false;
+        shape.autoClose = false;
+        shape.moveTo(10, 10);
+        shape.lineTo(10, 50);
+        shape.lineTo(50, 50);
+
+        // shape.lineTo(50, 10);
+        // shape.lineTo(50, 50);
+        // shape.lineTo(10, 50);
+        // 将closed属性设置为false以确保线段未闭合
       });
 
       // console.log(projection(polygon));
