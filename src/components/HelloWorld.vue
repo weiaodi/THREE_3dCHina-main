@@ -122,9 +122,9 @@ export default {
       console.log(lngLat);
       return [lngLat[0], lngLat[1]];
     },
-    drawExtrudeMesh(coordinates, projection, index) {
-      const shape = new THREE.Shape();
-
+    drawExtrudeMesh(coordinates, projection) {
+      // const shape = new THREE.Shape();
+      var points = [];
       console.log(coordinates);
       coordinates.forEach((coordinate) => {
         const wgs = this.UTMtoWGS(coordinate[0], coordinate[1]);
@@ -137,30 +137,39 @@ export default {
         // }
         // shape.lineTo(x, -y);
         // shape.autoClose = false;
-        shape.autoClose = false;
-        shape.moveTo(10, 10);
-        shape.lineTo(10, 50);
-        shape.lineTo(50, 50);
 
+        // shape.moveTo(10, 10);
+        // shape.lineTo(10, 50);
+        // shape.lineTo(50, 50);
+
+        points.push(new THREE.Vector3(x * 1000, y * 1000, 0));
+        // points.push(new THREE.Vector3(0, 50, 50));
         // shape.lineTo(50, 10);
         // shape.lineTo(50, 50);
         // shape.lineTo(10, 50);
         // 将closed属性设置为false以确保线段未闭合
       });
+      var material = new THREE.LineBasicMaterial({
+        color: 0xff00ff,
+        linewidth: 1,
+      });
 
+      var geometry = new THREE.BufferGeometry().setFromPoints(points);
+
+      // var line = new THREE.Line(geometry, material);
       // console.log(projection(polygon));
 
-      // 拉伸
-      const geometry = new THREE.ExtrudeGeometry(shape, {
-        depth: 0,
-        bevelEnabled: true,
-      });
-      const randomColor = (0.5 + index * 5000) * 0xffffff;
-      const material = new THREE.MeshBasicMaterial({
-        color: randomColor,
-        transparent: true,
-        opacity: 0.5,
-      });
+      // // 拉伸
+      // const geometry = new THREE.ExtrudeGeometry(shape, {
+      //   depth: 0,
+      //   bevelEnabled: true,
+      // });
+      // const randomColor = (0.5 + index * 5000) * 0xffffff;
+      // const material = new THREE.MeshBasicMaterial({
+      //   color: randomColor,
+      //   transparent: true,
+      //   opacity: 0.5,
+      // });
 
       return new THREE.Line(geometry, material);
     },
